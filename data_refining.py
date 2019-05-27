@@ -102,19 +102,23 @@ while True:
     # 종목을 선택하고 N의 값을 입력받는다
     stock_name = input("종목을 입력해주세요 : ")
     Number = int(input("N의 값을 입력해주세요 : "))
-    one_stock = stock_DataFrame.loc[ stock_DataFrame["stockname"] == stock_name]
+    one_stock = stock_DataFrame.loc[stock_DataFrame["stockname"] == stock_name]
     # print(one_stock)
 
     close_value = one_stock["close_value"] # 종가만 가져오기
     one_stock_copy = one_stock.copy() # DataFrame 에 열을 추가하기 위해 복사
 
     # print(close_value.index[0])
-    # print(len(close_value)+clㅌose_value.index[0]-1)
+    # print(len(close_value)+close_value.index[0]-1)
     # print(len(close_value))
     # 종가 일간 변화량
-    for i in range(close_value.index[0], (len(close_value)+close_value.index[0])-1, 1):
-        result = cv_diff_value(close_value[i], close_value[i+1])
-        cv_amount.append(result)
+    try:
+        for i in range(close_value.index[0], (len(close_value)+close_value.index[0])-1, 1):
+            result = cv_diff_value(close_value[i], close_value[i+1])
+            cv_amount.append(result)
+    except IndexError:
+        print("존재하지 않는 항목")
+        continue
     one_stock_copy["cv_diff_value"] = cv_amount # DataFrame 에 데이터 추가
     # print(one_stock_copy)
 
@@ -165,16 +169,21 @@ while True:
         if unNd_list[i] == -1:
             un_Nd_minus += 1
 
+    print(un_Nd_plus)
+    print(un_Nd_minus)
+
 # 발생했다면 반복문을 종료하고 발생하지 않았다면 N을 조정하거나 종목을 변경한다
     if un_Nd_plus >= 20 and un_Nd_minus >= 20:
+        break
+    else:
         print("un_Nd의 1 or -1 발생횟수가 둘 다 20을 넘지 않았습니다")
         continue
-    else:
-        break
 
 
 # 추가 할 column 생성
 raw_data = one_stock_copy[['cv_diff_value', 'cv_diff_rate', 'cv_maN_value', 'cv_maN_rate', 'ud_Nd']]
+print(one_stock_copy)
+print(raw_data)
 # 원본데이터에 column 을 추가
 final_result = pd.concat([stock_DataFrame, raw_data], join='outer', axis=1, join_axes=None)
 
