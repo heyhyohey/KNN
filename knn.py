@@ -8,10 +8,8 @@ import pandas as pd
 # column 이 추가된 csv 파일 읽어오기 // DataFrame으로 변경 // NaN값 제거
 csv_add_file_read = open('stock_history_added.csv', 'r', encoding='euc-kr')
 stock_data_add = pd.read_csv(csv_add_file_read)
-df = pd.DataFrame(stock_data_add)
-stock_DataFrame_add = df.dropna(axis=1)
-
-one_stock_add = df.loc[df["stockname"] == "LG이노텍"]
+one_stock_add = pd.DataFrame(stock_data_add)
+stock_DataFrame_add = one_stock_add.dropna(axis=1)
 
 # 1. 일간 종가 변화량, 일간 종가 변화율
 X = one_stock_add[["cv_diff_value", "cv_diff_rate"]] # 독립변수
@@ -44,7 +42,7 @@ while True:
 df_copy["ud_Nd_predicted"] = predict_column[K_Number_Final]
 raw_data = df_copy[['ud_Nd_predicted']]
 # 원본데이터에 column 을 추가
-final_result = pd.concat([df, raw_data], join='outer', axis=1, join_axes=None)
+final_result = pd.concat([one_stock_add, raw_data], join='outer', axis=1, join_axes=None)
 
 # 반복문이 끝나고 20회이상 발생하는 조건을 만족하면 csv파일(stock_history_added.csv)로 저장
 final_result.to_csv('stock_history_K.csv', encoding='ms949')

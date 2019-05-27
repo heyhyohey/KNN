@@ -80,7 +80,7 @@ def ud_Nd(cvdv, N):
     return un_Nd_list
 
 
-# csv 파일 읽어오기 // DataFrame으로 변경 // NaN값 제거
+# csv 파일 읽어오기 // DataFrame 으로 변경 // NaN값 제거
 csv_file_read = open('stock_history.csv', 'r', encoding='euc-kr')
 stock_data = pd.read_csv(csv_file_read)
 df = pd.DataFrame(stock_data)
@@ -103,14 +103,11 @@ while True:
     stock_name = input("종목을 입력해주세요 : ")
     Number = int(input("N의 값을 입력해주세요 : "))
     one_stock = stock_DataFrame.loc[stock_DataFrame["stockname"] == stock_name]
-    # print(one_stock)
+    print(one_stock)
 
     close_value = one_stock["close_value"] # 종가만 가져오기
     one_stock_copy = one_stock.copy() # DataFrame 에 열을 추가하기 위해 복사
 
-    # print(close_value.index[0])
-    # print(len(close_value)+close_value.index[0]-1)
-    # print(len(close_value))
     # 종가 일간 변화량
     try:
         for i in range(close_value.index[0], (len(close_value)+close_value.index[0])-1, 1):
@@ -128,7 +125,6 @@ while True:
         cv_rate.append(result2)
     one_stock_copy["cv_diff_rate"] = cv_rate # DataFrame 에 데이터 추가
     # print(one_stock_copy)
-
 
     # 종가 N일 이동평균
     res3 = cv_maN_value(close_value, Number)
@@ -153,12 +149,9 @@ while True:
     # N일 연속 상승, 하락, 그렇지 않은 날 파악
     result5 = ud_Nd(close_value, Number)
     one_stock_copy["ud_Nd"] = result5
-    # print(one_stock_copy)
-
 
     # un_Nd = 1, -1이 20회 이상 발생하도록 N을 3 ~ 5로 조정, 종목을 변경
     un_Nd_value = one_stock_copy["ud_Nd"] # N일 연속되는 증감 column 가져오기
-    # print(un_Nd_value)
     # DataFrame 을 list 로 변환
     for i in range(un_Nd_value.index[0], (len(un_Nd_value)+un_Nd_value.index[0]), 1):
         unNd_list.append(un_Nd_value[i])
@@ -179,15 +172,7 @@ while True:
         print("un_Nd의 1 or -1 발생횟수가 둘 다 20을 넘지 않았습니다")
         continue
 
-
-# 추가 할 column 생성
-raw_data = one_stock_copy[['cv_diff_value', 'cv_diff_rate', 'cv_maN_value', 'cv_maN_rate', 'ud_Nd']]
-print(one_stock_copy)
-print(raw_data)
-# 원본데이터에 column 을 추가
-final_result = pd.concat([stock_DataFrame, raw_data], join='outer', axis=1, join_axes=None)
-
-# 반복문이 끝나고 20회이상 발생하는 조건을 만족하면 csv파일(stock_history_added.csv)로 저장
-final_result.to_csv('stock_history_added.csv', encoding='ms949')
+# 반복문이 끝나고 20회이상 발생하는 조건을 만족하면 csv 파일(stock_history_added.csv)로 저장
+one_stock_copy.to_csv('stock_history_added.csv', encoding='ms949')
 print("Data가 성공적으로 추가됐습니다")
 csv_file_read.close()
