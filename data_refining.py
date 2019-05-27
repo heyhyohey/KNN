@@ -1,8 +1,4 @@
-from collections import Counter
-import math, random
 import matplotlib.pyplot as plt
-import csv
-import numpy as np
 import pandas as pd
 
 # 칼럼값으로 추가 - 함수 작성
@@ -173,6 +169,6 @@ while True:
         continue
 
 # 반복문이 끝나고 20회이상 발생하는 조건을 만족하면 csv 파일(stock_history_added.csv)로 저장
-one_stock_copy.to_csv('stock_history_added.csv', encoding='ms949')
+one_stock_copy.to_csv('stock_history_added.csv', encoding='ms949', index=False)
 print("Data가 성공적으로 추가됐습니다")
 csv_file_read.close()
