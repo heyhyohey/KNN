@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import pandas as pd
 
 # 칼럼값으로 추가 - 함수 작성
