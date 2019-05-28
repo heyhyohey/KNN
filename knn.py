@@ -15,17 +15,18 @@ df = pd.DataFrame(stock_data_add)
 X = df[["cv_diff_value", "cv_diff_rate"]] # 독립변수
 y = df["ud_Nd"] # 종속변수
 
-# 1-2. 모델2 - 일간 종가 변화량(cv_diff_value), 일간 종가 변화율(cv_diff_rate), 종가의 N일 이동평균(cv_maN_value)
 """
+# 1-2. 모델2 - 일간 종가 변화량(cv_diff_value), 일간 종가 변화율(cv_diff_rate), 종가의 N일 이동평균(cv_maN_value)
 X = df[["cv_diff_value", "cv_diff_rate", "cv_maN_value"]] # 독립변수
 y = df["ud_Nd"] # 종속변수
 """
-
-# 1-3. 모델3 - 일간 종가 변화량(cv_diff_value)
 """
-X = df[["cv_diff_value"]] # 독립변수
+# 1-3. 모델3 - 일간 종가 변화량(cv_diff_value), 일간 종가 변화율(cv_diff_rate), 종가의 N일 이동평균(cv_maN_value),
+#   종가의 N일 이동평균의 일간 변화율(cv_maN_rate)
+X = df[["cv_diff_value", "cv_diff_rate", "cv_maN_value", "cv_maN_rate"]] # 독립변수
 y = df["ud_Nd"] # 종속변수
 """
+
 # 학습데이터 : 검증데이터 = 7 : 3
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 df_copy = X_test.copy()
